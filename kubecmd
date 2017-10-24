@@ -1,0 +1,48 @@
+# !/bin/bash
+
+namespace=default
+deployment=""
+
+while getopts n:d: name
+  do
+    case $name in
+      n) namespace="$OPTARG";;
+      d) deployment_name="$OPTARG";;
+    esac
+done
+
+shift $(expr $OPTIND - 1 )
+command=$@
+
+container=$(kubectl get deployment $deployment_name --namespace $namespace -o json \
+  | jq '.spec.template.spec.containers[0].command = ["sleep", "999999"]' \
+  | jq 'del(.spec.template.spec.containers[0].livenessProbe)' \
+  | jq 'del(.spec.template.spec.containers[0].readinessProbe)' \
+  | jq '.spec.template.spec.containers[0]')
+
+pod_name="${deployment_name}-cmd-$RANDOM"
+
+echo "
+{
+  \"apiVersion\": \"v1\",
+  \"kind\": \"Pod\",
+  \"metadata\": {
+    \"name\": \"$pod_name\",
+    \"labels\": {
+      \"app\": \"cmd\"
+    }
+  },
+  \"spec\": {
+    \"containers\": [$container]
+  }
+}" | kubectl create --namespace $namespace -f -
+
+printf "connecting ."
+
+while [[ $(kubectl get pod $pod_name -n $namespace -o jsonpath="{..status.containerStatuses[0].ready}") != "true" ]]; do
+	printf "."
+  sleep 1
+done
+
+kubectl exec -it --namespace $namespace $pod_name $command
+kubectl delete pod $pod_name --namespace $namespace
