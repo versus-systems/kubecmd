@@ -13,7 +13,14 @@ You could run your commands directly on a deployment's pod but have in mind that
 ## Instalation
 
 * Install [jq](https://stedolan.github.io/jq/).
-* Download [`kubecmd`](https://github.com/versus-systems/kubecmd/blob/master/kubecmd) into any directory included in your `$PATH`.
+```bash
+brew install jq
+```
+* Install [kubecmd](https://raw.githubusercontent.com/stevenbarragan/dotfiles/master/kubecmd)
+```bash
+curl -fsSL https://raw.githubusercontent.com/versus-systems/kubecmd/master/kubecmd > /usr/local/bin/kubecmd
+chmod +x /usr/local/bin/kubecmd
+```
 
 ## Usage
 
