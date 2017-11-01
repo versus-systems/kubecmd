@@ -5,13 +5,13 @@ Run commands easily on dedicated deployment's pods.
 
 It creates a pod based on your deployment's container, it runs the command on it, and deletes the pod after it's done.
 
-But why?
-You could run your commands directly on a deployment's pod but have in mind that it's the same pod that is running your app, any deployment update can terminate the pod in the middle of your script's execution plus you have to figure out the pod's name.
+## But why?
+You could run your commands directly on a deployment's pod but have in mind that it's the same pod that is currenlty running your app, probably processing lots of requests already, any deployment update can terminate the pod in the middle of your script's execution plus you have to figure out the pod's name.
 
-*kubecmd* makes it easier to run any command creating a dedicated pod based on the specified deployment, it won't go away if a deployment update happens but until it's done with your command and you already know your deployment's name.
+**kubecmd** makes easier to run any command on your kubernetes apps creating a dedicated pod to do it, it won't go away if something like a deployment update happens but until it's done with your command. The created pod gets destroyed after the command finishes.
 
 ## Instalation
-
+* You need [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for course.
 * Install [jq](https://stedolan.github.io/jq/).
 ```bash
 brew install jq
@@ -34,8 +34,8 @@ kubecmd -d my-rails-app -n production rails c  # same as above but under the pro
 If you just want to ssh into it, you can run `/bin/sh` or `/bin/bash`.
 
 ```bash
-kubecmd -d my-app -n namespacename /bin/sh
-kubecmd -d my-app -n namespacename /bin/bash
+kubecmd -d my-app -n namespace /bin/sh
+kubecmd -d my-app -n namespace /bin/bash
 ```
 
 Tested on:
