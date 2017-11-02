@@ -15,7 +15,7 @@ shift $(expr $OPTIND - 1 )
 command=$@
 
 container=$(kubectl get deployment $deployment_name --namespace $namespace -o json \
-  | jq '.spec.template.spec.containers[0].command = ["sleep", "999999"]' \
+  | jq '.spec.template.spec.containers[0].command = ["sleep", "1d"]' \
   | jq 'del(.spec.template.spec.containers[0].livenessProbe)' \
   | jq 'del(.spec.template.spec.containers[0].readinessProbe)' \
   | jq '.spec.template.spec.containers[0]')
