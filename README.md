@@ -3,12 +3,12 @@ kubecmd
 
 Run commands easily on dedicated deployment's pods.
 
-It creates a pod based on your deployment's container, it runs the command on it, and deletes the pod after it's done.
+It creates a job based on your deployment, it runs the command on the job's pod, and deletes the job after it's done.
 
 ## But why?
 You could run your commands directly on a deployment's pod but have in mind that it's the same pod that is currenlty running your app, probably processing lots of requests already, any deployment update can terminate the pod in the middle of your script's execution plus you have to figure out the pod's name.
 
-**kubecmd** makes easier to run any command on your kubernetes apps creating a dedicated pod to do it, it won't go away if something like a deployment update happens but until it's done with your command. The created pod gets destroyed after the command finishes.
+**kubecmd** makes easier to run any command on your kubernetes apps creating a dedicated job to do it, it won't go away if something like a deployment update happens but until it's done with your command. The created job gets destroyed after the command finishes.
 
 ## Instalation
 * You need [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for course.
