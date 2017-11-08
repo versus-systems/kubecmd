@@ -50,7 +50,7 @@ JOB
 
 printf "connecting ."
 
-pod_name=$(kubectl get pod -n develop -l job=$job_name -o jsonpath="{.items[0].metadata.name}")
+pod_name=$(kubectl get pod -n $namespace -l job=$job_name -o jsonpath="{.items[0].metadata.name}")
 
 while [[ $(kubectl get pod $pod_name -n $namespace -o jsonpath="{..status.containerStatuses[0].ready}") != "true" ]]; do
   printf "."
