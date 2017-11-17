@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# https://github.com/versus-systems/kubecmd
 
 namespace=default
 deployment=""
@@ -10,6 +11,21 @@ while getopts n:d: name
       d) deployment_name="$OPTARG";;
     esac
 done
+
+if [[ -z $deployment_name ]]; then
+  cat << USAGE
+    You need to specify a deployment name and a namespace.
+    It defaults to default's namespace.
+
+    usage:
+      kubecmd -d <deployment name> -n <namespace> <command>
+
+    e.g.
+    kubecmd -d my-rails-app -n develop rails console  => open up a rails console
+    kubecmd -d my-rails-app -n develop /bin/sh        => ssh into my-rails-app
+USAGE
+exit 2
+fi
 
 shift $(expr $OPTIND - 1 )
 command=$@
